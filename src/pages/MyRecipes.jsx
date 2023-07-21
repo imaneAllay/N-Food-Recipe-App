@@ -5,12 +5,12 @@ import UpdateRecipe from './UpdateRecipe'; // Import the UpdateRecipe component
 
 const MyRecipes = () => {
   const [data, setData] = useState([]);
-  const [editingRecipe, setEditingRecipe] = useState(null); // Track the recipe being edited
+  const [editingRecipe, setEditingRecipe] = useState(null); // Add this line to define editingRecipe state
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/');
+        const response = await axios.get('http://localhost:3000/'); // Correct the API endpoint
         setData(response.data.data);
         console.log(response.data.data);
       } catch (error) {
@@ -21,27 +21,24 @@ const MyRecipes = () => {
     fetchData();
   }, []);
 
-  // ... your existing handleDelete function ...
-
-  // Function to handle editing a recipe
-  const handleEdit = (item) => {
-    setEditingRecipe(item);
+  const handleEdit = (recipe) => {
+    setEditingRecipe(recipe);
   };
 
-  // Function to handle canceling the edit
   const handleCancelEdit = () => {
     setEditingRecipe(null);
   };
 
-  // Function to update the recipe after the PUT request
-  const handleUpdateRecipe = async (updatedRecipe) => {
+  const handleUpdateRecipe = async (updatedData) => {
     try {
-      const response = await axios.put(`http://localhost:3000/api/${updatedRecipe._id}`, updatedRecipe);
+      const response = await axios.put(`http://localhost:3000/${editingRecipe._id}`, updatedData);
+
       if (response.status === 200) {
-        // Update the local data state with the updated recipe from the response.
-        setData((prevData) => prevData.map(item => item._id === updatedRecipe._id ? response.data.data : item));
         console.log('Recipe updated successfully');
-        setEditingRecipe(null); // Reset the editing state after successful update
+        setEditingRecipe(null); // Reset the editingRecipe state after successful update
+        setData((prevData) =>
+          prevData.map((recipe) => (recipe._id === editingRecipe._id ? { ...recipe, ...updatedData } : recipe))
+        );
       } else {
         throw new Error('Error updating recipe');
       }
@@ -50,10 +47,20 @@ const MyRecipes = () => {
     }
   };
 
-  // Check if data is undefined before mapping
-  if (!data) {
-    return <div>Loading...</div>;
-  }
+  const handleDelete = async (recipeId) => {
+    try {
+      const response = await axios.delete(`http://localhost:3000/${recipeId}`);
+
+      if (response.status === 200) {
+        console.log('Recipe deleted successfully');
+        setData((prevData) => prevData.filter((recipe) => recipe._id !== recipeId));
+      } else {
+        throw new Error('Error deleting recipe');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 gap-4">
@@ -74,15 +81,12 @@ const MyRecipes = () => {
                 <li key={index}>{ingredient}</li>
               ))}
             </ul>
-            <button
-              className="text-white font-thin text-sm bg-orange-500 p-4 m-2"
-              onClick={() => handleEdit(item)}
-            >
+            <button className="text-white font-thin text-sm bg-orange-500 p-4 m-2" onClick={() => handleEdit(item)}>
               Update
             </button>
             <button
               className="text-white font-thin text-sm bg-orange-500 p-4"
-              
+              onClick={() => handleDelete(item._id)}
             >
               Delete
             </button>
