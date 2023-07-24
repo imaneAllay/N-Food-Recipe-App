@@ -1,5 +1,5 @@
 import React from 'react';
-import recipe from '../assets/recipe.jpg'
+import Morroco from '../assets/Morroco.jpg'
 import {  NavLink } from 'react-router-dom'
 
 import Nav from './Nav';
@@ -23,7 +23,7 @@ export const Home = () => {
   </div>
     <div className="w-full h-full saturate-200">
         <img 
-        src={recipe}
+        src={Morroco}
         alt="recipe"
         className='w-full h-full object-center object-cover'
         ></img>

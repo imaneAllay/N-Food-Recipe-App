@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Nav from './Nav';
+import R from '../assets/R.avif'
+
 
 export default function Board() {
   return (
@@ -13,8 +15,15 @@ export default function Board() {
           </div>
           </div>
           <div className=""><Nav/>
+      
             <div >
-            
+            <div className="w-full h-full saturate-200">
+        <img 
+        src={R}
+        alt="recipe"
+        className='w-full h-full object-center object-cover'
+        ></img>
+    </div>
 
             </div>
             </div>
