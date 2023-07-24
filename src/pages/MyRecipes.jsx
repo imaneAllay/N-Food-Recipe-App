@@ -5,6 +5,7 @@ import UpdateRecipe from './UpdateRecipe'; // Import the UpdateRecipe component
 
 const MyRecipes = () => {
   const [data, setData] = useState([]);
+
   const [editingRecipe, setEditingRecipe] = useState(null); // Add this line to define editingRecipe state
 
   useEffect(() => {
@@ -67,6 +68,7 @@ const MyRecipes = () => {
       <div className="mb-4">
         <Nav />
       </div>
+      
       <h2 className="text-orange-500 font-extrabold text-xl">My Recipes</h2>
       {/* Conditionally render UpdateRecipe component if editingRecipe is set */}
       {editingRecipe ? (
@@ -74,13 +76,23 @@ const MyRecipes = () => {
       ) : (
         data.map((item) => (
           <div key={item._id} className="bg-white p-4 rounded shadow">
-            <h2 className="text-lg font-bold mb-2 text-orange-500">{item.Name}</h2>
+             <h2 className="text-lg font-bold mb-2 text-orange-500">{item.Name}</h2>
+            <div className="flex justify-center">
+        <img
+          src={`http://localhost:3000/${item.Image}`}
+          alt={item.Name}
+          className="w-20 h-auto"
+        />
+      </div>
+           
             <p className="mb-2 text-gray-700">Cuisine: {item.Cuisine}</p>
             <ul className="text-gray-700">
               {item.Ingredients.map((ingredient, index) => (
                 <li key={index}>{ingredient}</li>
               ))}
             </ul>
+            <p className="mb-2 text-gray-700">Description: {item.Description}</p>
+            
             <button className="text-white font-thin text-sm bg-orange-500 p-4 m-2" onClick={() => handleEdit(item)}>
               Update
             </button>

@@ -90,6 +90,21 @@ const UpdateRecipe = ({ recipeData, onUpdate }) => {
   className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-500 text-gray-800"
 />
         </div>
+        <div>
+          <label htmlFor="description" className="block mb-1">
+            Description:
+          </label>
+          <textarea
+            type="text"
+            id="description"
+            name="Description"
+            value={updatedRecipeData.Description}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 text-gray-800"
+          />
+        </div>
+
+        
         <button
           type="submit"
           className="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 focus:outline-none"
